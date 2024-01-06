@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {get} from "../utils.ts";
 
 type User = {
   id: string;
@@ -7,16 +8,21 @@ type User = {
 
 const Friends = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | undefined>(undefined);
+
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchFriends = async () => {
-      setLoading(true);
-      const response = await fetch(`http://localhost:1573/users/${id}/friends`);
-      const data = await response.json();
-
-      setLoading(false);
-      setUsers(data);
+      try {
+        setLoading(true);
+        const data = await get<User[]>(`/users/${id}/friends`);
+        setUsers(data);
+      } catch (e) {
+        setError(e as Error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchFriends();
@@ -25,6 +31,10 @@ const Friends = ({ id }: { id: string }) => {
 
   if(loading) {
     return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Something went wrong...</div>;
   }
 
   return (
