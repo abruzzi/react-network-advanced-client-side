@@ -1,5 +1,6 @@
 // import { Profile } from "./v1/profile.tsx";
-import { Profile } from "./v2/profile.tsx";
+// import { Profile } from "./v2/profile.tsx";
+import { Profile } from "./v3/profile.tsx";
 
 function App() {
   return (
