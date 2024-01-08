@@ -1,4 +1,4 @@
-import { Profile } from "./v4/profile.tsx";
+import { Profile } from "./v5/profile.tsx";
 import { NextUIProvider } from "@nextui-org/react";
 
 function App() {
