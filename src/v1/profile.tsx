@@ -33,9 +33,6 @@ const Profile = ({ id }: { id: string }) => {
     return <div>Something went wrong...</div>;
   }
 
-  console.log(loading);
-  console.log(error);
-
   return (
     <>
       {user && <About user={user} />}
