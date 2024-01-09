@@ -5,25 +5,14 @@ import {
   CardFooter,
   CardHeader,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { UserDetail } from "../types.ts";
-import { get } from "../utils.ts";
+import useSWR from "swr";
+import { getUserDetail } from "../api.ts";
 
 export function UserDetailCard({ id }: { id: string }) {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [detail, setDetail] = useState<UserDetail | undefined>();
-
-  useEffect(() => {
-    const fetchFeeds = async () => {
-      setLoading(true);
-      const data = await get<UserDetail>(`/users/${id}/details`);
-
-      setLoading(false);
-      setDetail(data);
-    };
-
-    fetchFeeds();
-  }, [id]);
+  const { data: detail, isLoading: loading } = useSWR(
+    `/user/${id}/details`,
+    () => getUserDetail(id)
+  );
 
   if (loading || !detail) {
     return <div>Loading...</div>;
