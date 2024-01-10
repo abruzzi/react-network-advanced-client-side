@@ -32,9 +32,9 @@ export function UserDetailCard({ id }: { id: string }) {
             <h4 className="text-small font-semibold leading-none text-default-600">
               {detail.name}
             </h4>
-            <h5 className="text-small tracking-tight text-default-500">
+            <p className="text-small tracking-tight text-default-500">
               {detail.twitter}
-            </h5>
+            </p>
           </div>
         </div>
       </CardHeader>
