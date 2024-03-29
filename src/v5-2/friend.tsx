@@ -7,7 +7,6 @@ import { Brief } from "./brief.tsx";
 import { preload } from "swr";
 import { getUserDetail } from "../api.ts";
 
-// @ts-expect-error ""
 const UserDetailCard = React.lazy(() => import("./user-detail-card.tsx"));
 
 export const Friend = ({ user }: { user: User }) => {

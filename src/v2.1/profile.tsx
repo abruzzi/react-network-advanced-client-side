@@ -3,9 +3,8 @@ import { Friends } from "./friends.tsx";
 import { get } from "../utils.ts";
 import { About } from "./about.tsx";
 import { User } from "../types.ts";
-import { UserInfoSkeleton } from "../misc/user-info-skeleton.tsx";
 
-const Profile = ({ id }: { id: string }) => {
+const useProfileData = (id: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>();
@@ -31,8 +30,19 @@ const Profile = ({ id }: { id: string }) => {
     fetchUserAndFriends();
   }, [id]);
 
+  return {
+    loading,
+    error,
+    user,
+    friends,
+  };
+};
+
+const Profile = ({ id }: { id: string }) => {
+  const { loading, error, user, friends } = useProfileData(id);
+
   if (loading) {
-    return <UserInfoSkeleton />;
+    return <div>Loading...</div>;
   }
 
   if (error) {

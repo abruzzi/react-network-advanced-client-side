@@ -3,6 +3,7 @@ import { Friends } from "./friends.tsx";
 import { get } from "../utils.ts";
 import { About } from "./about.tsx";
 import { User } from "../types.ts";
+import { Feeds } from "./feeds.tsx";
 import { UserInfoSkeleton } from "../misc/user-info-skeleton.tsx";
 
 const Profile = ({ id }: { id: string }) => {
@@ -43,6 +44,7 @@ const Profile = ({ id }: { id: string }) => {
     <>
       {user && <About user={user} />}
       <Friends users={friends} />
+      {user && <Feeds category={user.interests[0]} />}
     </>
   );
 };
