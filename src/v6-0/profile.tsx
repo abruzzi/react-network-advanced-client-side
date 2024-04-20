@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Friends } from "./friends.tsx";
 import { get } from "../utils.ts";
 import { About } from "./about.tsx";
-import {User} from "../types.ts";
+import { User } from "../types.ts";
 
-function useService<T>(url: string) {
+const useUser = (id: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>(undefined);
-  const [data, setData] = useState<T | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>();
 
-  const fetch = async () => {
+  const fetchUser = async () => {
     try {
       setLoading(true);
-      const data = await get<T>(url);
-      setData(data);
+      const data = await get<User>(`/users/${id}`);
+      setUser(data);
     } catch (e) {
       setError(e as Error);
     } finally {
@@ -24,18 +24,13 @@ function useService<T>(url: string) {
   return {
     loading,
     error,
-    data,
-    fetch,
+    user,
+    fetchUser,
   };
-}
+};
 
 const Profile = ({ id }: { id: string }) => {
-  const {
-    loading,
-    error,
-    data: user,
-    fetch: fetchUser,
-  } = useService<User>(`/users/${id}`);
+  const { loading, error, user, fetchUser } = useUser(id);
 
   useEffect(() => {
     fetchUser();
@@ -52,7 +47,9 @@ const Profile = ({ id }: { id: string }) => {
   return (
     <>
       {user && <About user={user} />}
-      <Friends id={id} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Friends id={id} />
+      </Suspense>
     </>
   );
 };
